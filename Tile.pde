@@ -1,4 +1,10 @@
-class Tile {
+interface Pattern {
+  boolean update();
+  boolean isDead();
+  void display(PShape p, color cFill);
+}
+
+class Tile implements Pattern {
   PVector position;
   float lifespan = 255;
   int a = 254;

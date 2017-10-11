@@ -3,19 +3,21 @@ ANIMATION PATTERNS
 SET MODE, BACKGROUND AND SVG FILL COLOR
 */
 
+//int[] mode = {0, 5};
 int[] mode = {0, 5};
 color bg = color(255,  98,  133);
 color f = color(255,204,204);
 //Mode 0 = get mode[1] random camels and scale fade
-//Mode 1 = move lines 
+//Mode 1 = get random line of mode[1] and remove 1st or last camel and slide
 //Mode 2 = 
 
 //PATTERN GRID
-ArrayList<Tile> tiles;
+ArrayList<Pattern> tiles;
 PShape sCamel;
 PShape sCamelFlipped;
 
 int[] rCamel;
+int row;
 
 void setup(){
   size(1280, 720, P3D);
@@ -24,18 +26,8 @@ void setup(){
   sCamel = loadShape("camel.svg");
   sCamelFlipped = loadShape("camelflip.svg");
   
-  //Create a list of Tiles
-  tiles = new ArrayList<Tile>(); 
-  for(int row = 0; row < 6; row++){
-    pushMatrix();
-    translate(142,0,0);
-    for(int cam = 0; cam < 15; cam++){
-      PVector v = new PVector(cam*96,row*138);
-      tiles.add(new Tile(v));
-    }
-    popMatrix();
-  }
- 
+  makeGrid("Tile");
+  
   switch(mode[0]) {
     case 0: 
       rCamel = new int[mode[1]];
@@ -45,6 +37,7 @@ void setup(){
       break;
     case 1: 
       println("New Mode");  // Prints "One"
+      row = int(random(6));
       break;
   }
 
@@ -56,12 +49,33 @@ void draw(){
   if (mode[0] == 0){
     animationFadeScale();
   }
+
+  if (mode[0] == 1){
+    animationRowSlide();
+  }
      
+}
+
+void makeGrid(String tileType){
+  //Create a list of Tiles
+  tiles = new ArrayList<Pattern>(); 
+  for(int row = 0; row < 6; row++){
+    pushMatrix();
+    translate(142,0,0);
+    for(int cam = 0; cam < 15; cam++){
+      PVector v = new PVector(cam*96,row*138);
+      
+      if (tileType == "Tile") {
+        tiles.add(new Tile(v));
+      }
+    }
+    popMatrix();
+  }
 }
 
 void animationFadeScale(){
   for(int i = tiles.size()-1; i >= 0; i--){    
-    Tile c = tiles.get(i);
+    Pattern c = tiles.get(i);
     
     for (int r = 0; r < rCamel.length; r++){
       if (i == rCamel[r]){
@@ -81,5 +95,14 @@ void animationFadeScale(){
     if (c.isDead()){
       tiles.remove(i);
     }  
+  }
+}
+
+void animationRowSlide(){
+  for(int i = tiles.size()-1; i >= 0; i--){  
+    Pattern c = tiles.get(i);
+    if (c.isDead()){
+      tiles.remove(i);
+    } 
   }
 }
