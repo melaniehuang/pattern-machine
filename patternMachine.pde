@@ -4,7 +4,7 @@ SET MODE, BACKGROUND AND SVG FILL COLOR
 */
 
 //int[] mode = {0, 5};
-int[] mode = {0, 5};
+int[] mode = {1, 6};
 color bg = color(255,  98,  133);
 color f = color(255,204,204);
 //Mode 0 = get mode[1] random camels and scale fade
@@ -26,18 +26,19 @@ void setup(){
   sCamel = loadShape("camel.svg");
   sCamelFlipped = loadShape("camelflip.svg");
   
-  makeGrid("Tile");
-  
   switch(mode[0]) {
     case 0: 
+      println("Mode 0");
+      makeGrid("TileFade");
       rCamel = new int[mode[1]];
       for (int i = 0; i < rCamel.length; i++){
         rCamel[i] = int(random(16,tiles.size()-16));
       } 
       break;
     case 1: 
-      println("New Mode");  // Prints "One"
-      row = int(random(6));
+      println("Mode 1");  // Prints "One"
+      makeGrid("TileRowSlide");
+      row = int(random(mode[1]));
       break;
   }
 
@@ -65,8 +66,12 @@ void makeGrid(String tileType){
     for(int cam = 0; cam < 15; cam++){
       PVector v = new PVector(cam*96,row*138);
       
-      if (tileType == "Tile") {
-        tiles.add(new Tile(v));
+      if (tileType == "TileFade") {
+        tiles.add(new TileFade(v));
+      }
+      
+      if (tileType == "TileRowSlide") {
+        tiles.add(new TileRowSlide(v));
       }
     }
     popMatrix();
@@ -99,10 +104,34 @@ void animationFadeScale(){
 }
 
 void animationRowSlide(){
-  for(int i = tiles.size()-1; i >= 0; i--){  
-    Pattern c = tiles.get(i);
-    if (c.isDead()){
-      tiles.remove(i);
-    } 
-  }
+  //print grid
+  //get row
+  //fade first or last camel out
+  //translate row sideways in prev direction
+  //print new camel at opposite end
+  
+  for(int r = 0; r < 6; r++){
+      for (int i = row*15+14; i >= row*14+row; i--){
+        Pattern c = tiles.get(i);
+        boolean loop = false;
+        
+        if (r == row){
+          loop = c.update();
+        }
+        
+        if (loop == true){
+          row = int(random(mode[1]));
+        }
+        
+        if (i % 2 == 0){
+          c.display(sCamel, f); 
+        } else {
+          c.display(sCamelFlipped, f);
+        }    
+         
+        if (c.isDead()){
+          tiles.remove(i);
+        } 
+     }
+  } 
 }

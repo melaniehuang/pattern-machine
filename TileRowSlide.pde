@@ -1,17 +1,11 @@
-interface Pattern {
-  boolean update();
-  boolean isDead();
-  void display(PShape p, color cFill);
-}
-
-class Tile implements Pattern {
+class TileRowSlide implements Pattern {
   PVector position;
   float lifespan = 255;
   int a = 254;
   int neg = 2;
   float angle = 0;
 
-  Tile(PVector p){
+  TileRowSlide(PVector p){
     position = p.get();
   }
   
