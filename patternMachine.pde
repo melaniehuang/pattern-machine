@@ -38,7 +38,8 @@ void setup(){
     case 1: 
       println("Mode 1");  // Prints "One"
       makeGrid("TileRowSlide");
-      row = int(random(mode[1]));
+      //row = int(random(mode[1]));
+      row = 1;
       break;
   }
 
@@ -82,7 +83,7 @@ void animationFadeScale(){
   for(int i = tiles.size()-1; i >= 0; i--){    
     Pattern c = tiles.get(i);
     
-    for (int r = 0; r < rCamel.length; r++){
+    for (int r = 0; r < rCamel.length; r++){      
       if (i == rCamel[r]){
           boolean loop = c.update();
           if (loop == true){
@@ -110,28 +111,26 @@ void animationRowSlide(){
   //translate row sideways in prev direction
   //print new camel at opposite end
   
-  for(int r = 0; r < 6; r++){
-      for (int i = row*15+14; i >= row*14+row; i--){
-        Pattern c = tiles.get(i);
-        boolean loop = false;
-        
-        if (r == row){
-          loop = c.update();
-        }
-        
+  for(int i = tiles.size()-1; i >= 0; i--){    
+    Pattern c = tiles.get(i);
+    // if row = 1, all camels between 15 and 29
+    if (i >= 15 && i <= 29){
+      for (int r = row*15+14; r >= row*14+row; r--){ 
+        boolean loop = c.update();
         if (loop == true){
           row = int(random(mode[1]));
         }
+      }
+    }
         
-        if (i % 2 == 0){
-          c.display(sCamel, f); 
-        } else {
-          c.display(sCamelFlipped, f);
-        }    
+    if (i % 2 == 0){
+      c.display(sCamel, f);       
+    } else {
+      c.display(sCamelFlipped, f);
+    }    
          
-        if (c.isDead()){
-          tiles.remove(i);
-        } 
-     }
+    if (c.isDead()){
+      tiles.remove(i);
+    } 
   } 
 }

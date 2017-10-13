@@ -11,14 +11,15 @@ class TileRowSlide implements Pattern {
   
   boolean update(){    
     if (a == 0 || a == 254) { 
-      neg = -neg; 
+     neg = -neg; 
     }
     
     a += neg;
     
     if (a != 254){
-      angle += 0.02;
+     angle += 0.02;
     }
+   
     return (a == 254);
   }
   
@@ -29,8 +30,8 @@ class TileRowSlide implements Pattern {
   void display(PShape p, color cFill){ 
     noStroke();
     p.setFill(color(cFill,a));
-    float w = p.width-10 + (sin(angle) * 8);
-    float h = p.height-10 + (sin(angle) * 8);
-    shape(p,position.x, position.y, w, h);  
+    //float w = p.width-10 + (sin(angle) * 8);
+    //float h = p.height-10 + (sin(angle) * 8);
+    shape(p,position.x, position.y, 142, 127);
   }
 }
