@@ -26,11 +26,14 @@ class TileFade implements Pattern {
     return (lifespan <= 0);
   }
   
-  void display(PShape p, color cFill){ 
+  void display(PShape s, color cFill){ 
     noStroke();
-    p.setFill(color(cFill,a));
-    float w = p.width-10 + (sin(angle) * 8);
-    float h = p.height-10 + (sin(angle) * 8);
-    shape(p,position.x, position.y, w, h);  
+    s.setFill(color(cFill,a));
+    float w = s.width-11 + (cos(angle) * 6);
+    float h = s.height-11 + (cos(angle) * 6);
+    shape(s,position.x, position.y, w, h);  
   }
 }
+
+//10 + (sin(angle + PI) * diameter/2) + diameter/2;
+//p.height-10 + (sin(angle) * 8);
